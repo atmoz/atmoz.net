@@ -1,0 +1,169 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <title> - jsFiddle demo</title>
+  
+  <script type='text/javascript' src='http://code.jquery.com/jquery-1.8.0.js'></script>
+  
+  <link rel="stylesheet" type="text/css" href="http://fiddle.jshell.net/css/normalize.css">
+  
+  <style type='text/css'>
+    table {
+    margin-bottom: 10px;
+}
+table, td {
+    border: 1px solid #ccc;
+    border-collapse: collapse;
+}
+td {
+    height: 40px;
+    width: 40px;
+    text-align: center;
+}
+td.head {
+    background: #efefef;
+    color: #aaa;
+}
+td.operator,
+td.current {
+    color: #000;
+    font-weight: bold;
+}
+table input {
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    font-size: 16px;
+    border: 0;
+}
+table input:focus {
+    background: #CDFFFF;
+    color: #004444;
+}
+table input.correct {
+    background: #CDFFD6;
+    color: #CDFFD6;
+}
+table input.correct:focus,
+table.completed input {
+    color: #70A379;
+}
+table input.wrong {
+    background: #FFD9CD;
+    color: #9F5C4F;
+} 
+
+  </style>
+  
+
+
+<script type='text/javascript'>//<![CDATA[ 
+$(window).load(function(){
+$(document).ready(function() {
+    function arrayShuffle(theArray) {
+        var len = theArray.length;
+        var i = len;
+        while (i--) {
+            var p = parseInt(Math.random()*len);
+            var t = theArray[i];
+            theArray[i] = theArray[p];
+            theArray[p] = t;
+        }
+    };
+    
+    function headerX(input) {
+        return $(input).parents('tr').children('td').first();
+    }
+    
+    function headerY(input) {
+        return $(input).parents('table').find('td').eq($(input).parent('td').index());
+    }
+    
+    function newTable() {
+        var operator = $('#operator').val();
+        var $table = $('#multiplicationTable');
+        $table.html('<tr><td class="head operator">' + operator + '</td></tr>');
+        
+        // Cells
+        var numbers = $('#numbers').val().split(',');
+        var rowX = numbers;
+        var rowY = numbers;
+        var $rowX = $table.find('tr:first');
+        var emptyCells = '';
+        
+        arrayShuffle(rowX);
+        arrayShuffle(rowY);
+        
+        for (i in rowX) {
+            $rowX.append('<td class="head">' + rowX[i] + '</td>');
+            emptyCells += '<td></td>';
+        }
+
+        for (i in rowY) {
+            $rowX.after('<tr><td class="head">' + rowY[i] + '</td>' + emptyCells + '</tr>');
+        }
+        
+        // Input
+        $table.find('td:not(.head)').append('<input type="text" />');
+        $table.find('input').focus(function() {
+            headerX(this).addClass('current');
+            headerY(this).addClass('current');
+        }).blur(function() {
+            var $this = $(this);
+            var answerGiven = $this.val();
+            var xnum = parseInt(headerX(this).text());
+            var ynum = parseInt(headerY(this).text());
+            var solution = eval(xnum + operator + ynum);
+            
+            // Round to 2 decimals
+            if (String(solution).indexOf('.') > 0) {
+                solution = parseFloat((Math.round(100 * solution) / 100).toFixed(2));
+            }
+            
+            $table.find('.head').removeClass('current');
+            $this.removeClass('correct wrong');
+            
+            if (String(answerGiven).length > 0) {
+                $this.addClass(answerGiven == solution ? 'correct' : 'wrong');
+                
+                if ($('#noreturn').is(':checked')) {
+                    $this.attr('readonly', 'readonly');
+                }
+            }
+            
+            if ($table.find('input:not(.correct)').length == 0) 
+                $table.addClass('completed');
+            else
+                $table.removeClass('completed');
+        });
+    }
+    
+    $('#newTable').click(newTable);
+});
+});//]]>  
+
+</script>
+
+
+</head>
+<body>
+  <table id="multiplicationTable"></table>
+
+<input type="text" id="numbers" value="2,3,4,5,6,7,8,9,11,12" title="Numbers" />
+<select id="operator" title="operator">
+    <option value="*">*</option>
+    <option value="/">/</option>
+    <option value="+">+</option>
+    <option value="-">-</option>
+</select>
+<input type="checkbox" id="noreturn" title="You can not edit your answers" />
+<button id="newTable">New table</button>
+<p>http://jsfiddle.net/yprwU/33/</p>
+
+  
+</body>
+
+
+</html>

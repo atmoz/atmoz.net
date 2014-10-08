@@ -1,0 +1,11 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+target=$(realpath $DIR/http/)
+
+docker run \
+    --name atmoz_web \
+    --restart=on-failure:10 \
+    -v $target:/usr/share/nginx/html:ro \
+    -e VIRTUAL_HOST=atmoz.net,atmoz.no \
+    -d $@ nginx

@@ -1,0 +1,55 @@
+body {
+	background: #FFF;
+	color: #000;
+	font-family: verdana, arial, sans-serif;
+}
+a {
+	color: #000;
+	text-decoration: none;
+}
+a:hover {
+	color: #0099cc;
+	text-decoration: underline;
+}
+#container {
+	width: 500px;
+	margin: 75px 0 0 100px;
+}
+h1 {
+	float: left;
+	width: 106px;
+	height: 106px;
+	margin: 0;
+	background: url(/images/cube3blue.png) no-repeat;
+	text-indent: -9999px;
+}
+ul {
+	margin: 0;
+	padding-left: 120px;
+	list-style-type: none;
+}
+ul li {
+	padding: 1px 0;
+}
+ul li a {
+	padding-left: 22px;
+	line-height: 25px;
+}
+ul li.twitter a {
+	background: url(/images/balloon_twitter.png) 0 50% no-repeat;
+}
+ul li.flickr a {
+	background: url(/images/images.png) 0 50% no-repeat;
+}
+ul li.last a {
+	background: url(/images/music.png) 0 50% no-repeat;
+}
+ul li.blog a {
+	background: url(/images/blog__pencil.png) 0 50% no-repeat;
+}
+ul li.git a {
+	background: url(/images/github-icon.png) 0 50% no-repeat;
+}
+ul li.wiki a {
+        background: url(/images/wiki.gif) 0 50% no-repeat;
+}
